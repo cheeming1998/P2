@@ -18,7 +18,7 @@ public class JavaApplication2 {
      */
     public static void main(String[] args) {
         //dwadawdawdawdawdadadada
-        System.out.println("suck my dick");
+        System.out.println("yoong sim short");
         // TODO code application logic here
     }
     
