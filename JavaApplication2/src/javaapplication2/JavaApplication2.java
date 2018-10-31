@@ -5,6 +5,8 @@
  */
 package javaapplication2;
 
+import static java.time.Clock.system;
+
 /**
  *
  * @author Tarc
@@ -16,6 +18,7 @@ public class JavaApplication2 {
      */
     public static void main(String[] args) {
         //dwadawdawdawdawdadadada
+        System.out.println("suck my dick");
         // TODO code application logic here
     }
     
