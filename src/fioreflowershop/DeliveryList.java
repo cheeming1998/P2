@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -133,19 +134,28 @@ public class DeliveryList extends javax.swing.JFrame {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     Object rowData[] = new Object[5];
     CustOrderDA custOrderDA = new CustOrderDA();
+    boolean found=false;
     ConsumerDA consumerDA = new ConsumerDA();
     List<Custorder> custOrderList = custOrderDA.getAllRecord();
+ 
      for (Custorder custOrderList1 : custOrderList) {
          
          if(checkDate(custOrderList1.getDatedelivery())&&(custOrderList1.getStatus()).toUpperCase().equals("DELIVERY")){
               rowData[0] = custOrderList1.getCustomerid().getCustomerid();
-              rowData[1] = consumerDA.getRecord(custOrderList1.getCustorderid()).getFullname();
+              rowData[1] = consumerDA.getRecord(custOrderList1.getCustomerid().getCustomerid());
               rowData[2] = custOrderList1.getCustorderid();
               rowData[3] = custOrderList1.getDeliveryaddress();
               rowData[4] = custOrderList1.getDistance();
               model.addRow(rowData);
+              found=true;
          }
+     
+         
      }
+     if(found==false){
+         JOptionPane.showMessageDialog(null, "No Delivery Order Today.");
+    }
+     
 }
     public boolean checkDate(Date deliveryDate){
         Date todayDate = new Date();

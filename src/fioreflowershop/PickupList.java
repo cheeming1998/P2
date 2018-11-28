@@ -8,6 +8,7 @@ package fioreflowershop;
 import da.ConsumerDA;
 import da.CustOrderDA;
 import da.PaymentDA;
+import entity.Consumer;
 import entity.Custorder;
 import java.util.Date;
 import java.util.List;
@@ -33,19 +34,26 @@ public void displayDeliveryOrder(){
     Object rowData[] = new Object[4];
     CustOrderDA custOrderDA = new CustOrderDA();
    ConsumerDA consumerDA = new ConsumerDA();
+   boolean found = false;
 
     List<Custorder> custOrderList = custOrderDA.getAllRecord();
      for (Custorder custOrderList1 : custOrderList) {
          
          if(checkDate(custOrderList1.getDatedelivery())&&custOrderList1.getStatus().equals("PICKUP")){
+            Consumer consumer = consumerDA.getRecord(custOrderList1.getCustomerid().getCustomerid());
             
               rowData[0] = custOrderList1.getCustomerid().getCustomerid();
-              rowData[1] = consumerDA.getRecord(custOrderList1.getCustorderid()).getFullname();
+              rowData[1] = consumer.getFullname();
               rowData[2] = custOrderList1.getCustorderid();
               rowData[3] = custOrderList1.getDatedelivery();
               model.addRow(rowData);
+              found = true;
          }
      }
+      if(found==false){
+         JOptionPane.showMessageDialog(null, "No Pickup Order Today.");
+    }
+    
 }
  public boolean checkDate(Date deliveryDate){
         Date todayDate = new Date();
@@ -150,8 +158,19 @@ public void displayDeliveryOrder(){
            CustOrderDA custOrderDA = new CustOrderDA();
            Custorder custOrder = new Custorder();
            custOrder = custOrderDA.getRecord(ID);
+           Date date;
+        date = new Date();
+           custOrder.setPickuptime(date);
+           if(jTextField1.getText()==null){
+               JOptionPane.showMessageDialog(null, "Order ID cannot be empty.");
+           }else{
            if(custOrderDA.UpdatePickupRecord(custOrder)){
                  JOptionPane.showMessageDialog(null, "Record has been updated.");
+                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                 model.getDataVector().removeAllElements();
+                 model.fireTableDataChanged();
+                 displayDeliveryOrder();
+           }
            }
            // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed

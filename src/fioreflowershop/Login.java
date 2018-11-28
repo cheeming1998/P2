@@ -177,6 +177,8 @@ public class Login extends javax.swing.JFrame {
     
         if(username.equals("abcd")&&password.equals("abcd")){
             found = true;
+        }else{
+            JOptionPane.showMessageDialog(null, "Invalid username or password");
         }
         
        return found;

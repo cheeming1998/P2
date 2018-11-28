@@ -11,6 +11,7 @@ import da.PaymentDA;
 import entity.Custorder;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -117,20 +118,25 @@ public class PickupPaymentList extends javax.swing.JFrame {
     CustOrderDA custOrderDA = new CustOrderDA();
      PaymentDA paymentDA = new PaymentDA();
      ConsumerDA consumerDA = new ConsumerDA();
+    boolean found = false;
 
     List<Custorder> custOrderList = custOrderDA.getAllRecord();
      for (Custorder custOrderList1 : custOrderList) {
          
-         if(checkDate(custOrderList1.getDatedelivery())&&custOrderList1.getStatus().equals("PICKUP")){
+         if(checkDate(custOrderList1.getDatedelivery())&&custOrderList1.getStatus().equals("PICKUP") ||custOrderList1.getStatus().equals("PICKUPED")){
               if(paymentDA.getRecordByCustorderID(custOrderList1.getCustorderid())==null&&consumerDA.getRecord(custOrderList1.getCustomerid().getCustomerid())!=null){
               rowData[0] = custOrderList1.getCustomerid().getCustomerid();
-              rowData[1] = consumerDA.getRecord(custOrderList1.getCustorderid()).getFullname();
+              rowData[1] = consumerDA.getRecord(custOrderList1.getCustomerid().getCustomerid());
               rowData[2] = custOrderList1.getCustorderid();
               rowData[3] = "RM "+ custOrderList1.getTotal();
               model.addRow(rowData);
+              found=true;
               }
          }
      }
+      if(found==false){
+         JOptionPane.showMessageDialog(null, "No PickUp Payment Today.");
+    }
     }
      public boolean checkDate(Date deliveryDate){
         Date todayDate = new Date();

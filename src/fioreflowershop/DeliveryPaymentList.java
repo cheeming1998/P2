@@ -12,6 +12,7 @@ import da.PaymentDA;
 import entity.Custorder;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -118,7 +119,7 @@ public class DeliveryPaymentList extends javax.swing.JFrame {
     Object rowData[] = new Object[4];
     CustOrderDA custOrderDA = new CustOrderDA();
     ConsumerDA consumerDA = new ConsumerDA();
-           
+           boolean found = false;
 
     List<Custorder> custOrderList = custOrderDA.getAllRecord();
      for (Custorder custOrderList1 : custOrderList) {
@@ -126,13 +127,17 @@ public class DeliveryPaymentList extends javax.swing.JFrame {
          if(checkDate(custOrderList1.getDatedelivery())&&(custOrderList1.getStatus()).toUpperCase().equals("DELIVERY")){
              if(paymentDA.getRecordByCustorderID(custOrderList1.getCustorderid())==null&&consumerDA.getRecord(custOrderList1.getCustomerid().getCustomerid())!=null){
               rowData[0] = custOrderList1.getCustomerid().getCustomerid();
-              rowData[1] = consumerDA.getRecord(custOrderList1.getCustorderid()).getFullname();
+              rowData[1] = consumerDA.getRecord(custOrderList1.getCustomerid().getCustomerid());
               rowData[2] = custOrderList1.getCustorderid();
               rowData[3] = "RM "+custOrderList1.getTotal();
               model.addRow(rowData);
+              found=true;
              }
          }
      }
+      if(found==false){
+         JOptionPane.showMessageDialog(null, "No Delivery Order Today.");
+    }
     }
      public boolean checkDate(Date deliveryDate){
         Date todayDate = new Date();

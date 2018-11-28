@@ -31,11 +31,11 @@ public void checkStock(){
     boolean tF=false;
     ProductDA productDA = new ProductDA();
     List<Product> productList = productDA.getAllRecord();
-    String stockAlert="Product Quantity Information \n";
+    String stockAlert="Low Product Quantity Information \nID   Product Name    Quantity \n___ ___________  __________\n";
     for(Product prod : productList){
         System.out.println(prod.getDescription());
         if(prod.getQuantity()<10){
-            stockAlert += prod.getProductid()+"  "+ prod.getDescription()+"  "+prod.getQuantity()+"\n";
+            stockAlert += prod.getProductid()+"           "+ prod.getDescription()+"       "+prod.getQuantity()+"\n";
             tF=true;
         }
     }
